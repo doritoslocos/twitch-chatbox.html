@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Twitch Chat Box</title>
+	<script src="https://embed.twitch.tv/embed/v1.js"></script>
+	<script>
+		// Define a function to handle new chat messages
+		function handleChatMessage(channel, user, message) {
+			// Create a new div element for the message
+			var chatMessage = document.createElement("div");
+			chatMessage.innerHTML = user + ": " + message;
+
+			// Append the message to the chat box
+			var chatBox = document.getElementById("chat-box");
+			chatBox.appendChild(chatMessage);
+
+			// Scroll the chat box to the bottom
+			chatBox.scrollTop = chatBox.scrollHeight;
+		}
+
+		// Initialize the Twitch embed and chat API
+		new Twitch.Embed("twitch-embed", {
+			width: "100%",
+			height: 500,
+			channel: "africano100porciento",
+			parent: ["https://github.com/doritoslocos/ahorasi.github.io"]
+		}).then(function(embed) {
+			// Connect to the chat API
+			var chat = embed._client;
+
+			// Register the chat message handler
+			chat.on("PRIVMSG", function(channel, userstate, message, self) {
+				handleChatMessage(channel, userstate.username, message);
+			});
+		});
+	</script>
+	<style>
+		/* Define the styles for the chat box container */
+		#chat-box-container {
+			position: relative;
+			width: 100%;
+			height: 500px;
+			background-image: url('your-image-url.jpg');
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+
+		/* Define the styles for the chat box */
+		#chat-box {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			bottom: 10px;
+			left: 10px;
+			overflow-y: scroll;
+			background-color: rgba(0, 0, 0, 0.5);
+			padding: 10px;
+			color: white;
+			font-size: 16px;
+			line-height: 1.5;
+			font-family: Arial, sans-serif;
+		}
+	</style>
+</head>
+<body>
+	<!-- Define the container for the Twitch embed and chat box -->
+	<div id="twitch-embed"></div>
+	<div id="chat-box-container">
+		<div id="chat-box"></div>
+	</div>
+</body>
+</html>
